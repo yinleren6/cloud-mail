@@ -11,6 +11,7 @@ import roleService from '../service/role-service';
 import userService from '../service/user-service';
 import telegramService from '../service/telegram-service';
 import aiService from '../service/ai-service';
+import { dispatchNotification } from '../plugins/notification/index.js';
 
 export async function email(message, env, ctx) {
 
@@ -157,10 +158,13 @@ export async function email(message, env, ctx) {
 
 		}
 
-		//转发到TG
+		//转发到TG (旧版，已弃用)
 		if (tgBotStatus === settingConst.tgBotStatus.OPEN && tgChatId) {
 			await telegramService.sendEmailToBot({ env }, emailRow)
 		}
+
+		//新通知系统 (notify_rule)
+		ctx.waitUntil(dispatchNotification(env, emailRow).catch(e => console.error('[Notification] dispatch error:', e.message)));
 
 		//转发到其他邮箱
 		if (forwardStatus === settingConst.forwardStatus.OPEN && forwardEmail) {
