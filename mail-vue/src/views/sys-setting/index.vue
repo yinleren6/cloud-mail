@@ -261,6 +261,15 @@
             <div class="card-title">{{ $t('emailPush') }}</div>
             <div class="card-content">
               <div class="setting-item">
+                <div><span>{{ $t('tgBot') }}</span></div>
+                <div class="forward">
+                  <span>{{ setting.tgBotStatus === 0 ? $t('enabled') : $t('disabled') }}</span>
+                  <el-button class="opt-button" size="small" type="primary" @click="openTgSetting">
+                    <Icon icon="fluent:settings-48-regular" width="18" height="18"/>
+                  </el-button>
+                </div>
+              </div>
+              <div class="setting-item">
                 <div><span>{{ $t('otherEmail') }}</span></div>
                 <div class="forward">
                   <span>{{ setting.forwardStatus === 0 ? $t('enabled') : $t('disabled') }}</span>
