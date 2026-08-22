@@ -1,8 +1,8 @@
-import orm from '../entity/orm';
-import email from '../entity/email';
-import account from '../entity/account';
+import orm from '../../entity/orm';
+import email from '../../entity/email';
+import account from '../../entity/account';
 import { and, eq, sql } from 'drizzle-orm';
-import { emailConst } from '../const/entity-const';
+import { emailConst } from '../../const/entity-const';
 
 const migrationService = {
 

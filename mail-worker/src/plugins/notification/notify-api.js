@@ -1,10 +1,10 @@
-import app from '../hono/hono';
+import app from '../../hono/hono';
 import { Notification, providerList } from './notification.js';
-import result from '../model/result';
-import BizError from '../error/biz-error';
-import { t } from '../i18n/i18n';
-import orm from '../entity/orm.js';
-import { email } from '../entity/email.js';
+import result from '../../model/result';
+import BizError from '../../error/biz-error';
+import { t } from '../../i18n/i18n';
+import orm from '../../entity/orm.js';
+import { email } from '../../entity/email.js';
 import { eq } from 'drizzle-orm';
 
 app.get('/notify/list', async (c) => {
