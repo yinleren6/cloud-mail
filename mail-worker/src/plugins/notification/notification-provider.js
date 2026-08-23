@@ -48,6 +48,17 @@ class NotificationProvider {
 		return lines.join('\n');
 	}
 
+	renderTemplate(template, data) {
+		return template
+			.replace(/\{\{subject\}\}/g, data.subject)
+			.replace(/\{\{from\}\}/g, data.from)
+			.replace(/\{\{to\}\}/g, data.to)
+			.replace(/\{\{toAddress\}\}/g, data.toAddress)
+			.replace(/\{\{content\}\}/g, data.content)
+			.replace(/\{\{message\}\}/g, data.message)
+			.replace(/\{\{timestamp\}\}/g, data.timestamp);
+	}
+
 	async send(config, message, env) {
 		throw new Error('send() must be overridden');
 	}

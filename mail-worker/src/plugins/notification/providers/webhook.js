@@ -107,17 +107,6 @@ class WebhookProvider extends NotificationProvider {
 		}
 	}
 
-	renderTemplate(template, data) {
-		return template
-			.replace(/\{\{subject\}\}/g, data.subject)
-			.replace(/\{\{from\}\}/g, data.from)
-			.replace(/\{\{to\}\}/g, data.to)
-			.replace(/\{\{toAddress\}\}/g, data.toAddress)
-			.replace(/\{\{content\}\}/g, data.content)
-			.replace(/\{\{message\}\}/g, data.message)
-			.replace(/\{\{timestamp\}\}/g, data.timestamp);
-	}
-
 	renderObject(obj, data) {
 		if (typeof obj === 'string') return this.renderTemplate(obj, data);
 		if (Array.isArray(obj)) return obj.map((item) => this.renderObject(item, data));
