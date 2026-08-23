@@ -310,7 +310,7 @@
                 <div class="setting-item">
                   <div><span>{{ $t(chType.label) }}</span></div>
                   <div class="forward">
-                    <el-button class="opt-button" size="small" type="primary" style="margin-right: 8px" @click="openAddNotifyDialog(chType.type)">
+                    <el-button class="opt-button" size="small" type="primary" @click="openAddNotifyDialog(chType.type)">
                       <Icon icon="material-symbols:add-rounded" width="16" height="16"/>
                     </el-button>
                     <span v-if="!notifyRulesByType(chType.type).length" class="no-instances">{{ $t('noNotifyInstance') }}</span>
@@ -318,11 +318,9 @@
                 </div>
                 <div v-if="notifyRulesByType(chType.type).length" class="notify-instance-list">
                   <div v-for="rule in notifyRulesByType(chType.type)" :key="rule.id" class="notify-instance-item">
-                    <div class="notify-instance-name">{{ rule.name || $t('defaultInstanceName') }}</div>
+                    <div class="notify-instance-name" @click="openEditNotifyDialog(rule)">{{ rule.name || $t('defaultInstanceName') }}</div>
                     <div class="notify-instance-actions">
                       <el-switch :model-value="rule.enabled" :active-value="1" :inactive-value="0" @change="toggleNotifyInstance(rule)"/>
-                      <el-button size="small" @click="openEditNotifyDialog(rule)"><Icon icon="material-symbols:edit-outline-rounded" width="14" height="14"/></el-button>
-                      <el-button size="small" type="danger" @click="deleteNotifyInstance(rule)"><Icon icon="material-symbols:delete-outline-rounded" width="14" height="14"/></el-button>
                     </div>
                   </div>
                 </div>
@@ -1303,18 +1301,6 @@ function toggleNotifyInstance(rule) {
   notifySet({ id: rule.id, enabled: rule.enabled ? 0 : 1 }).then(() => getNotifyRules())
 }
 
-function deleteNotifyInstance(rule) {
-  ElMessageBox.confirm(t('delNotifyInstanceConfirm'), {
-    confirmButtonText: t('confirm'),
-    cancelButtonText: t('cancel'),
-    type: 'warning'
-  }).then(() => {
-    notifyDelete(rule.id).then(() => {
-      ElMessage({ message: t('delSuccessMsg'), type: 'success', plain: true })
-      getNotifyRules()
-    })
-  })
-}
 
 function deleteNotifyFromDialog() {
   ElMessageBox.confirm(t('delNotifyInstanceConfirm'), {
