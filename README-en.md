@@ -75,6 +75,29 @@ With only one domain, you can create multiple different email addresses, similar
 
 - **📜 More Features**: Under development...
 
+## Recent Updates
+
+### Bug Fixes (2026-08)
+
+- **Notification System**: Fixed `this.renderTemplate is not a function` error for WeCom/DingTalk/Feishu, moved `renderTemplate` method to base class
+- **Notification UI**: Removed delete and edit buttons from instance list, click instance name to enter edit interface
+- **Webhook**: Fixed `config.body` field name mismatch, unified to `config.bodyTemplate`
+- **Webhook**: Fixed form-data condition check error
+- **Webhook**: Fixed `{{message}}` template variable rendering undefined issue
+- **Webhook**: GET request now sends simple fields only, prevents URL truncation
+- **Telegram**: HTML mode now properly escapes user content
+- **Telegram**: `messageThreadId` now correctly converted to integer
+- **Notification System**: `maxContentLength` now correctly converted to number
+- **Notification System**: Optimized recipient parsing logic to avoid duplicate JSON.parse
+- **Email Receiving**: Fixed `email.attachments` null TypeError
+- **API**: Fixed `JSON.parse(rule.config)` missing try/catch causing 500 error
+- **API**: Added JSON parse error handling to DELETE endpoint
+
+### New Features
+
+- **Unit Tests**: Added `buildMessage` and `formatMessage` core logic tests (12 test cases)
+- **Plugin Architecture**: Notification and migration systems use plugin-based design, only 4 lines of changes to core files
+
 ## New Features in This Fork
 
 ### Notification System
@@ -202,6 +225,56 @@ git merge upstream/main
 git checkout patched
 git merge main
 ```
+
+## Deployment
+
+### Environment Variable Configuration
+
+There are two ways to configure environment variables:
+
+#### Option 1: Modify wrangler.toml (Recommended)
+
+Uncomment and fill in the corresponding values in `mail-worker/wrangler.toml`:
+
+```toml
+[vars]
+domain = ["your-domain.com"]          # Email domains
+admin = "admin@your-domain.com"       # Admin email
+jwt_secret = "your-jwt-secret"        # JWT secret
+
+# Notification System (optional)
+NOTIFIERS = "telegram,webhook"        # Enabled notification channels, comma-separated
+TIMEZONE = "Asia/Shanghai"            # Notification timestamp timezone
+```
+
+优点：只需设置一次，每次部署自动生效。
+
+#### Option 2: Cloudflare Dashboard
+
+1. Log in to [Cloudflare Dashboard](https://dash.cloudflare.com)
+2. Go to Workers & Pages → Select your Worker
+3. In Settings → Variables and Secrets, add variables
+4. Deploy using wrangler command:
+   ```bash
+   cd mail-worker
+   wrangler deploy
+   ```
+
+优点：无需修改代码，适合临时调整。
+缺点：每次重新部署后需要在 Dashboard 重新设置变量。
+
+### Notification System Configuration
+
+Notification channels are configured through the web interface after deployment, no code changes needed:
+
+1. Access your app → System Settings → Notification System
+2. Click the `+` button on the corresponding channel to add an instance
+3. Fill in the Webhook URL and other configuration details
+4. Click the test button to verify the configuration
+
+### GitHub Action Deployment
+
+See [doc/github-action.md](doc/github-action.md)
 
 ## Sponsor
 

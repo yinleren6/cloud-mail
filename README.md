@@ -75,6 +75,29 @@
 
 - **📜 更多功能**：正在开发中...
 
+## 近期更新
+
+### Bug 修复 (2026-08)
+
+- **通知系统**: 修复企业微信/钉钉/飞书 `this.renderTemplate is not a function` 错误，将 `renderTemplate` 方法移至基类
+- **通知系统 UI**: 移除实例列表中的删除按钮和编辑按钮，点击实例名称直接进入编辑界面
+- **Webhook**: 修复 `config.body` 字段名不匹配问题，统一为 `config.bodyTemplate`
+- **Webhook**: 修复 form-data 条件判断错误
+- **Webhook**: 修复 `{{message}}` 模板变量渲染 undefined 问题
+- **Webhook**: GET 请求只发送简单字段，避免 URL 过长被截断
+- **Telegram**: HTML 模式现在正确转义用户内容
+- **Telegram**: `messageThreadId` 现在正确转换为整数
+- **通知系统**: `maxContentLength` 现在正确转换为数字
+- **通知系统**: 优化 recipient 解析逻辑，避免重复 JSON.parse
+- **邮件接收**: 修复 `email.attachments` 空值导致的 TypeError
+- **API**: 修复 `JSON.parse(rule.config)` 无 try/catch 导致的 500 错误
+- **API**: DELETE 端点增加 JSON 解析错误处理
+
+### 新增功能
+
+- **单元测试**: 新增 `buildMessage` 和 `formatMessage` 核心逻辑测试（12 个测试用例）
+- **插件架构**: 通知系统与迁移系统采用插件化设计，核心文件仅 4 行改动
+
 ## 本项目新增功能
 
 ### 通知系统
@@ -202,6 +225,56 @@ git merge upstream/main
 git checkout patched
 git merge main
 ```
+
+## 部署
+
+### 环境变量配置方式
+
+有两种方式配置环境变量：
+
+#### 方式一：修改 wrangler.toml（推荐）
+
+在 `mail-worker/wrangler.toml` 中取消注释并填写对应值：
+
+```toml
+[vars]
+domain = ["your-domain.com"]          # 邮件域名
+admin = "admin@your-domain.com"       # 管理员邮箱
+jwt_secret = "your-jwt-secret"        # JWT 密钥
+
+# 通知系统（可选）
+NOTIFIERS = "telegram,webhook"        # 启用的通知渠道，逗号分隔，不填就是全部启用
+TIMEZONE = "Asia/Shanghai"            # 通知时间戳时区
+```
+
+优点：只需设置一次，每次部署自动生效。
+
+#### 方式二：Cloudflare Dashboard 设置
+
+1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com)
+2. 进入 Workers & Pages → 选择你的 Worker
+3. 在 Settings → Variables and Secrets 中添加变量
+4. 使用 wrangler 命令部署：
+   ```bash
+   cd mail-worker
+   wrangler deploy
+   ```
+
+优点：无需修改代码，适合临时调整。
+缺点：每次重新部署后需要在 Dashboard 重新设置变量。
+
+### 通知系统配置
+
+通知渠道在部署后通过 Web 界面配置，无需修改代码：
+
+1. 访问你的应用 → 系统设置 → 通知系统
+2. 点击对应渠道的 `+` 按钮添加实例
+3. 填写 Webhook URL 等配置信息
+4. 点击测试按钮验证配置
+
+### GitHub Action 部署
+
+详见 [doc/github-action.md](doc/github-action.md)
 
 ## 赞助
 
