@@ -387,6 +387,7 @@ const zh = {
     editNotifyInstance: '编辑实例',
     dataMigration: '数据迁移',
     manualMigration: '手动迁移',
+    notifySystem: '通知系统',
     migrateEmailDesc: '将未分配的旧邮件匹配到对应的邮箱',
     migrateSuccessMsg: '迁移完成，共迁移 {count} 封邮件',
     migrateNoEmailMsg: '没有需要迁移的邮件',

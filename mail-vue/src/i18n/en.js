@@ -387,6 +387,7 @@ const en = {
     editNotifyInstance: 'Edit Instance',
     dataMigration: 'Data Migration',
     manualMigration: 'Manual Migration',
+    notifySystem: 'Notification System',
     migrateEmailDesc: 'Match unassigned old emails to corresponding mailboxes',
     migrateSuccessMsg: 'Migration complete, {count} emails migrated',
     migrateNoEmailMsg: 'No emails to migrate',

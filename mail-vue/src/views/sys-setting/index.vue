@@ -287,6 +287,12 @@
                   </el-button>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <div class="card-title">{{ $t('notifySystem') }}</div>
+            <div class="card-content">
               <div class="setting-item">
                 <div>
                   <span>{{ $t('manualMigration') }}</span>
@@ -977,7 +983,7 @@
  </template>
 
 <script setup>
-import {computed, defineOptions, nextTick, reactive, ref} from "vue";
+import {computed, defineOptions, nextTick, reactive, ref, watch} from "vue";
 import {deleteBackground, setBackground, setBlackList, settingQuery, settingSet} from "@/request/setting.js";
 import {useSettingStore} from "@/store/setting.js";
 import {useUiStore} from "@/store/ui.js";
